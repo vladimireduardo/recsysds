@@ -1,0 +1,155 @@
+<!-- 
+ Create a html5 page that uses datatables.net to show the data from a json file.
+  Use JQuery and datatables.net . The json file is all_recommendations_json.json 
+    and it is in the same folder as the html file.  This is the structure of the json file:
+    {
+        "50": [
+            {
+                "itemId": 593,
+                "title": "Solaris",
+                "score": 2.008076476687681
+            },
+            {
+                "itemId": 260,
+                "title": "The 39 Steps",
+                "score": 1.7369468162419808
+            },
+            {
+                "itemId": 110,
+                "title": "Three Colors: Red",
+                "score": 1.5198955544898294
+            },
+            {
+                "itemId": 4993,
+                "title": "5 Card Stud",
+                "score": 1.3424901899449009
+            },
+            {
+                "itemId": 2028,
+                "title": "Say Anything...",
+                "score": 1.269609096535418
+            },
+            {
+                "itemId": 457,
+                "title": "Sissi",
+                "score": 1.2309422967120818
+            },
+            {
+                "itemId": 150,
+                "title": "48 Hrs.",
+                "score": 1.1725631297011498
+            },
+            {
+                "itemId": 4226,
+                "title": "Shriek If You Know What I Did Last Friday the Thirteenth",
+                "score": 1.121549098524473
+            },
+            {
+                "itemId": 608,
+                "title": "Men in Black II",
+                "score": 1.1209914293281606
+            },
+            {
+                "itemId": 58559,
+                "title": "Confession of a Child of the Century",
+                "score": 1.082408905788027
+            }
+        ],
+        "151": [
+            {
+                "itemId": 296,
+                "title": "Terminator 3: Rise of the Machines",
+                "score": 2.1808441902618845
+            },
+            {
+                "itemId": 480,
+                "title": "Monsoon Wedding",
+                "score": 1.6681866287203706
+            },
+            {
+                "itemId": 858,
+                "title": "Sleepless in Seattle",
+                "score": 1.4806588065880628
+            },
+            {
+                "itemId": 457,
+                "title": "Sissi",
+                "score": 1.4184322325923224
+            },
+            {
+                "itemId": 2028,
+                "title": "Say Anything...",
+                "score": 1.4128511885665567
+            },
+            {
+                "itemId": 4993,
+                "title": "5 Card Stud",
+                "score": 1.4038305727711027
+            },
+            {
+                "itemId": 150,
+                "title": "48 Hrs.",
+                "score": 1.3380560498402039
+            },
+            {
+                "itemId": 608,
+                "title": "Men in Black II",
+                "score": 1.320658115365238
+            },
+            {
+                "itemId": 590,
+                "title": "The Hours",
+                "score": 1.198921385824132
+            },
+            {
+                "itemId": 1265,
+                "title": "Bridge to Terabithia",
+                "score": 1.0918702158865348
+            }
+        ],
+        ...
+    }
+
+    Use datatables.net and JQuery to show the data in a table. The table should have 4 columns: The parent ID, the itemId, the title and the score.
+    
+    The table should be sortable by the score column. The table should be sorted in descending order by default.
+
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recommendations</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+</head>
+<body>
+    <table id="recommendations" class="display">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Item ID</th>
+                <th>Title</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <script>
+        $(document).ready(function() {
+            $.getJSON('all_recommendations_json.json', function(data) {
+                var table = $('#recommendations').DataTable();
+                $.each(data, function(parentId, recommendations) {
+                    $.each(recommendations, function(index, recommendation) {
+                        table.row.add([parentId, recommendation.itemId, recommendation.title, recommendation.score]);
+                    });
+                });
+                // table.order([3, 'desc']).draw();
+                // paginate each 50 rows
+                table.page.len(20).draw();
+                // table.draw();
+            });
+        });
+    </script>
+</html>
