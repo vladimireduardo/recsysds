@@ -12,19 +12,21 @@
 <body>
     <div class="container">
         <h1>RECSYS - Sistema de Recomendaciones</h1>
-    <div class="row">        
-        <label for="parentIdFilter">User ID:</label>
-        <input type="text" id="parentIdFilter">
-        <label for="itemIdFilter">Item ID:</label>
-        <input type="text" id="itemIdFilter">
-        <label for="titleFilter">Title:</label>
-        <input type="text" id="titleFilter">
-        <br
-        <label for="minScoreFilter">Min Score:</label>
-        <input type="number" id="minScoreFilter">
-        <label for="maxScoreFilter">Max Score:</label>
-        <input type="number" id="maxScoreFilter">
-        <button class="btn btn-primary" id="filterButton">Filtrar</button>
+        <div class="row">        
+            <div class="col-md-12">
+                <label for="parentIdFilter">User ID:</label>
+                <input type="text" id="parentIdFilter">
+                <label for="itemIdFilter">Item ID:</label>
+                <input type="text" id="itemIdFilter">       
+                <label for="titleFilter">Title:</label>
+                <input type="text" id="titleFilter">
+                <label for="minScoreFilter">Min Score:</label>
+                <input type="number" id="minScoreFilter" style="width:50px">
+                <label for="maxScoreFilter">Max Score:</label>
+                <input type="number" id="maxScoreFilter"  style="width:50px">
+                <button class="btn btn-primary" id="filterButton">Filtrar</button>
+            </div>
+    </div>
     </div>
     <table id="recommendations" class="display">
         <thead>
@@ -38,6 +40,7 @@
         <tbody>
         </tbody>
     </table>
+
     </body>
     <script>
  $(document).ready(function() {
