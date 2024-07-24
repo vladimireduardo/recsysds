@@ -73,9 +73,9 @@
                     var maxScore = parseFloat($('#maxScoreFilter').val(), 10);
 
                     var parentId = data[0].toLowerCase(); // Use data for the parent ID column
-                    var itemId = data[1].toLowerCase(); // Use data for the item ID column
-                    var title = data[2].toLowerCase(); // Use data for the title column
-                    var score = parseFloat(data[3]) || 0; // Use data for the score column
+                    var itemId = data[2].toLowerCase(); // Use data for the item ID column
+                    var title = data[3].toLowerCase(); // Use data for the title column
+                    var score = parseFloat(data[4]) || 0; // Use data for the score column
 
                     if ((parentIdFilter && parentId !== parentIdFilter) ||
                         (itemIdFilter && itemId !== itemIdFilter) ||
