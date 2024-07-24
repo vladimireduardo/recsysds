@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recommendations</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    
+</head>
+<body>
+    <div class="container">
+        <h1>RECSYS - Sistema de Recomendaciones (Unknown)</h1>
+        <div class="row">        
+            <div class="col-md-12">
+                <label for="parentIdFilter">User ID:</label>
+                <input type="text" id="parentIdFilter">
+                <label for="itemIdFilter">Item ID:</label>
+                <input type="text" id="itemIdFilter">       
+                <label for="titleFilter">Title:</label>
+                <input type="text" id="titleFilter">
+                <label for="minScoreFilter">Min Score:</label>
+                <input type="number" id="minScoreFilter" style="width:50px">
+                <label for="maxScoreFilter">Max Score:</label>
+                <input type="number" id="maxScoreFilter"  style="width:50px">
+                <button class="btn btn-primary" id="filterButton">Filtrar</button>
+            </div>
+    </div>
+    </div>
+    <table id="recommendations" class="display">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Item ID</th>
+                <th>Title</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    </body>
+    <script>
+ $(document).ready(function() {
+            var table = $('#recommendations').DataTable();
+
+            $.getJSON('unkown_users_recommendations_json.json', function(data) {
+                $.each(data, function(parentId, recommendations) {
+                    $.each(recommendations, function(index, recommendation) {
+                        table.row.add([parentId, recommendation.itemId, recommendation.title, recommendation.score]);
+                    });
+                });
+
+                table.page.len(20).draw();
+            });
+
+            // Custom filtering function
+            $.fn.dataTable.ext.search.push(
+                function(settings, data, dataIndex) {
+                    var parentIdFilter = $('#parentIdFilter').val().toLowerCase();
+                    var itemIdFilter = $('#itemIdFilter').val().toLowerCase();
+                    var titleFilter = $('#titleFilter').val().toLowerCase();
+                    var minScore = parseFloat($('#minScoreFilter').val(), 10);
+                    var maxScore = parseFloat($('#maxScoreFilter').val(), 10);
+
+                    var parentId = data[0].toLowerCase(); // Use data for the parent ID column
+                    var itemId = data[1].toLowerCase(); // Use data for the item ID column
+                    var title = data[2].toLowerCase(); // Use data for the title column
+                    var score = parseFloat(data[3]) || 0; // Use data for the score column
+
+                    if ((parentIdFilter && parentId !== parentIdFilter) ||
+                        (itemIdFilter && itemId !== itemIdFilter) ||
+                        (titleFilter && title.indexOf(titleFilter) === -1) ||
+                        (isNaN(minScore) === false && score < minScore) ||
+                        (isNaN(maxScore) === false && score > maxScore)) {
+                        return false;
+                    }
+                    return true;
+                }
+            );
+
+            // Function to apply the filter
+            function applyFilter() {
+                table.draw();
+            }
+
+            // Event listener for the filter button
+            $('#filterButton').click(function() {
+                applyFilter();
+            });
+
+            // Event listener for Enter key press
+            $('#parentIdFilter, #itemIdFilter, #titleFilter, #minScoreFilter, #maxScoreFilter').on('keypress', function(e) {
+                if (e.which === 13) { // 13 is the Enter key code
+                    applyFilter();
+                }
+            });
+        });
+    </script>
+</html>
